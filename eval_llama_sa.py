@@ -53,6 +53,7 @@ def eval_sent_sa(config: Config):
         class_logits = prediction.logits[0, -1, class_token_ids]
         probabilities = softmax(class_logits)
         print(probabilities)
+        print("label:", row['sentiment'])
         predicted_class = torch.argmax(probabilities, dim=0)
         return predicted_class.item()
 
