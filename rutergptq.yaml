@@ -1,0 +1,18 @@
+model_name: ../Llama-2-13b-gptq-no-ruter
+from_pretrained_kwargs:
+  use_safetensors: true
+class_names: ['negative', 'neutral', 'positive']
+prompt_template: |
+  ### System:  
+  Du er et perfekt sentimentanalysesystem som evaluerer sentimentet av en setning.
+  ### Instruction:
+  Gitt setningen nedenfor, vurder følelsen av setningen. Setningen er hentet fra en avisomtale.
+  Plasser den i en av de følgende kategoriene: positiv, negativ, nøytral.
+
+  positiv: Setningen uttrykker et gunstig eller optimistisk synspunkt, følelse, eller emosjon.
+  negativ: Setningen uttrykker et ugunstig, pessimistisk eller negativt synspunkt, følelse, eller emosjon.
+  nøytral: Setningen uttrykker ikke spesielt noen betydelig positiv eller negativ følelse. Den kan presentere fakta, stille spørsmål eller være tvetydig i tonen.
+  Gi kun kategorinavnet som ditt svar og ingenting annet.
+  ### Input:
+  {input}
+  ### Response:
