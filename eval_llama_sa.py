@@ -1,4 +1,5 @@
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+import json
 from typing import Optional
 import argh
 import torch
@@ -10,12 +11,16 @@ from sklearn.metrics import classification_report
 from tqdm import tqdm
 tqdm.pandas()
 
+TASK_NAME = "sentiment_analysis_norec_sentence"
+
+
 @dataclass
 class Config:
     # TODO: validate prompt template
     model_name: str
     prompt_template: str
     class_names: list
+    n_shot: str = "0"
     from_pretrained_kwargs: dict = None
     tokenizer: Optional[str] = None
 
@@ -25,6 +30,9 @@ class Config:
             config_dict = yaml.safe_load(f)
     
         return cls(**config_dict)
+    
+    def to_dict(self):
+        return {k: str(v) for k, v in asdict(self).items()}
     
 
 def get_class_token_ids(tokenizer, categories, space_is_token=False):
@@ -74,7 +82,19 @@ def eval_sent_sa(config: Config):
         return predicted_class.item()
 
     predictions = df.progress_apply(_predict, axis=1)
+    predictions_dict = predictions.to_dict()
+
+    with open("predictions/sa/sentence/" + config.model_name.replace("/", "").replace(".", "") + "_predictions.json", "w+") as f:
+        json.dump(
+            {
+                "model_config": config.to_dict(),
+                "predictions": predictions_dict,
+            },
+            f,
+        )
+
     print(classification_report(df['sentiment'], predictions, target_names=config.class_names))
+
 
 
 def main(config_path: str):

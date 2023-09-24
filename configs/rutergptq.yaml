@@ -1,4 +1,5 @@
 model_name: ../Llama-2-13b-gptq-no-ruter
+n_shot: 0
 from_pretrained_kwargs:
   use_safetensors: true
 class_names: ['negative', 'neutral', 'positive']

@@ -1,0 +1,18 @@
+model_name: TheBloke/Llama-2-13b-Chat-GPTQ
+n_shot: 0
+class_names: ['negative', 'neutral', 'positive']
+prompt_template: |
+  [INST]<<SYS>> 
+  You are an excellent sentiment analysis system that determines the polarity of a given text.
+  <</SYS>>
+  Given the sentence below, evaluate the sentiment of the sentence written in Norwegian. The sentence itself is taken from a newspaper review. 
+  Place it in one of the following categories: positive, negative, neutral.
+
+  positive: The sentence expresses a favorable or optimistic viewpoint, feeling, or emotion.
+  negative: The sentence expresses an unfavorable, pessimistic, or adverse viewpoint, feeling, or emotion.
+  neutral: The sentence does not particularly express any significant positive or negative sentiment. It may present facts, ask questions, or be ambiguous in tone.
+  Provide only the category name as your response and nothing else.
+
+  Sentence:
+  {input}
+  [/INST]
